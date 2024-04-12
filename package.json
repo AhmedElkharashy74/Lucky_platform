@@ -1,0 +1,26 @@
+{
+  "name": "lucky",
+  "version": "1.0.0",
+  "description": "educational platform",
+  "main": "index.js",
+  "scripts": {
+    "test": "meow"
+    ,"start": "nodemon index.js"
+  },
+  "keywords": [
+    "meow"
+  ],
+  "author": "ahmedElkharashy",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.9",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "mongoose": "^8.3.1",
+    "session": "^0.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

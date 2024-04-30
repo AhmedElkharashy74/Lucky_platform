@@ -1,1 +1,17 @@
-GET http://localhost:4000
+# POST http://localhost:3000/login
+# Content-Type: application/json
+
+# {
+#     "email" : "meow@nyan.com",
+#     "password" : "meowNyan"
+# }
+
+POST http://localhost:3000/teacher/create-course/
+Content-Type: application/json
+
+{
+    "title" : "first course",
+    "description" : "meow meow meow nyan!",
+    "price" :  "120",
+    "category" : "CS (cat-science)"
+}

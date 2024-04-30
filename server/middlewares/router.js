@@ -10,5 +10,8 @@ router.get('/login',(req,res)=>{
     res.render('login');
 })
 router.get('/Home/',auth('teacher'),teacherController.read)
+router.post('/teacher/create-course/', teacherController.createCourse)
 router.get('/logout',teacherController.logOut)
+router.post('/teacher/add-video/:id',teacherController.addVideo);
+router.get('/teacher/:id/',teacherController.readCourses)
 module.exports = router

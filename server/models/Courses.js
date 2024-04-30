@@ -5,6 +5,9 @@ const videoSchema = new mongoose.Schema({
       type: String,
       required: true
   },
+  description : {
+    type : String
+  },
   url: {
       type: String,
       required: true
@@ -34,8 +37,11 @@ const courseSchema = new mongoose.Schema({
     ref: 'Student'
   }],
   price: {
-    type: Number,
+  type: Number,
     required: true
+  },
+  thumbNail : {
+    type : String, 
   },
   videos: [videoSchema] // Array of videos associated with the course
 
@@ -46,4 +52,4 @@ const Course = mongoose.model('Course', courseSchema);
 const Video = mongoose.model('Video', videoSchema);
 
 
-module.exports = Course;
+module.exports = {Course,Video};

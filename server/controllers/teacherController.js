@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Teacher = require('../models/Teacher');
-const Course = require('../models/Courses')
+const {Course, Video} = require('../models/Courses')
 const session = require('express-session')
 // const teacher = mongoose.model("Teacher", Teacher)
 
@@ -33,7 +33,7 @@ class teacherController{
     
     
     static async create(req,res){
-        const newTeacher = new teacher({
+        const newTeacher = new Teacher({
             first_name: req.body.fname,
             last_name : req.body.lname,
             email : req.body.email,
@@ -75,8 +75,72 @@ class teacherController{
         }
 
         static async createCourse(req,res){
-            const {title, }
+            const {title, description, category, price, instructor} = req.body
+            const newCourse = new Course({
+                title : title,
+                description : description,
+                category : category,
+                price : price,
+                instructor : instructor
+            });
+            try{
+                await newCourse.save();
+                res.status(201).send('course is added !');
+            }catch(e){
+                console.error(e.message);
+            }
         }
+
+
+// Controller function to add a video to an existing course
+        static async addVideo(req, res){
+    const {id} = req.params; // Get the course ID from the request params
+    const { title, url } = req.body; // Get the video data from the request body
+
+    try {
+        // Find the course by ID
+        const course = await Course.findById(id);
+
+        if (!course) {
+            return res.status(404).send('Course not found');
+        }
+
+        // Create a new video object using the Video schema
+        const newVideo = new Video({ title, url });
+
+        // Save the new video document
+        await newVideo.save();
+
+        // Add the new video to the course's videos array
+        course.videos.push(newVideo);
+
+        // Save the updated course document
+        await course.save();
+
+        res.status(200).send('Video added to course successfully');
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server Error');
     }
+        }
+
+// Controller function to read courses by instructor ID
+    static async readCourses(req, res) {
+    const { id } = req.params;
+
+    try {
+        // Find courses by instructor ID
+        const courses = await Course.find({ instructor: id });
+
+        // Send the courses as a response
+        res.send(courses);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server Error');
+    }
+}
+}
+
+
 
 module.exports = teacherController

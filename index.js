@@ -5,6 +5,8 @@ const path = require('path');
 const router = require('./server/middlewares/router')
 const session = require('express-session')
 
+
+
 // Initialize Express app
 const app = express();
 
@@ -14,6 +16,9 @@ app.use(bodyParser.json());
 
 
 // Set up EJS as the view engine
+// app.use('/static', express.static(path.join(__dirname, 'views')))
+
+app.use(express.static('views/teacher'));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(session({

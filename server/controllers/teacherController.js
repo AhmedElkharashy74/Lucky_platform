@@ -51,11 +51,11 @@ class teacherController{
         static async read(req, res) {
           try {
             // Retrieve all documents from the "teachers" collection
-            const teachers = await Teacher.find();
+            const courses = await Teacher.find({instructor:req.session.id});
       
             // Send the retrieved documents as a response
             // res.status(200).json({ success: true, teachers });
-            res.render('teacher/home',teachers)
+            res.render('teacher/xtreme-html/ltr/index',courses)
           } catch (error) {
             // Handle any errors that occur during the database query
             console.error(error.message);

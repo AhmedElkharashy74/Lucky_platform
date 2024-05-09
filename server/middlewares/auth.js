@@ -8,7 +8,7 @@ const authMiddleware = (role) => {
             next();
         } else {
             // User is not authenticated or does not have the required role, send an error response
-            res.status(401).redirect('/login');
+            res.status(401).redirect('/');
         }
     };
 };

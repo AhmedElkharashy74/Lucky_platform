@@ -4,8 +4,8 @@
   "description": "educational platform",
   "main": "index.js",
   "scripts": {
-    "test": "meow"
-    ,"start": "nodemon index.js"
+    "test": "meow",
+    "start": "nodemon index.js"
   },
   "keywords": [
     "meow"
@@ -17,6 +17,7 @@
     "ejs": "^3.1.9",
     "express": "^4.19.2",
     "express-session": "^1.18.0",
+    "mongodb": "^6.6.1",
     "mongoose": "^8.3.1",
     "session": "^0.1.0"
   },

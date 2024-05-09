@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 const Teacher = require('../models/Teacher');
 const {Course, Video} = require('../models/Courses')
+const category = require('../models/cat')
 const session = require('express-session')
+const {ObjectId} = require("mongodb")
 // const teacher = mongoose.model("Teacher", Teacher)
 
 class teacherController{
@@ -22,6 +24,7 @@ class teacherController{
                 req.session.userId= user._id;
                 req.session.role = 'teacher';
                 res.redirect('/Home/');
+                console.log(req.session.userId)
             } else {
                 return res.send('Incorrect password');
             }
@@ -48,20 +51,20 @@ class teacherController{
         }
     }
 
-        static async read(req, res) {
-          try {
-            // Retrieve all documents from the "teachers" collection
-            const courses = await Teacher.find({instructor:req.session.id});
-      
-            // Send the retrieved documents as a response
-            // res.status(200).json({ success: true, teachers });
-            res.render('teacher/xtreme-html/ltr/index',courses)
-          } catch (error) {
-            // Handle any errors that occur during the database query
-            console.error(error.message);
-            res.status(500).json({ success: false, message: 'An error occurred while fetching teachers' });
+    static async read(req, res) {
+        try {
+            const categories = await category.find({});
+            const courses = await Course.find({ instructor: new ObjectId(req.session.userId)})
+                .populate('category',"name")
+                .populate('instructor',"first_name last_name");
+            const teacher = await Teacher.findById(req.session.userId);
+            res.render('teacher/xtreme-html/ltr/index', { courses, teacher,categories });
+        } catch (error) {
+            console.error(error); // Log the actual error for debugging
+            res.status(500).json({ success: false, message: 'An error occurred while fetching data' });
         }
-        }
+    }
+    
 
         static async logOut(req,res){
             req.session.destroy((err) => {
@@ -85,7 +88,7 @@ class teacherController{
             });
             try{
                 await newCourse.save();
-                res.status(201).send('course is added !');
+                res.status(201).redirect(req.header('Referer'));
             }catch(e){
                 console.error(e.message);
             }
@@ -139,6 +142,15 @@ class teacherController{
         res.status(500).send('Server Error');
     }
 }
+    static async deleteCourse(req,res){
+        try{
+            await Course.findByIdAndDelete(req.params.id)
+            res.status(200).redirect(req.header('Referer'));
+        }catch(e){
+            console.error(e)
+            res.status(500).send('err');
+        }
+    }
 }
 
 

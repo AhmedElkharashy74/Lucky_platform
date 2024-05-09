@@ -18,7 +18,20 @@ const teacherSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  biography : {
+    type : String
+  }
+  ,
+  profilePic : {
+    type : String,
+    unique : true,
+    required : true,
+    default : ''
+  }
+  ,
   // You can add more fields like teacher's profile picture, bio, etc.
+},{
+  timestamps:true
 });
 
 const Teacher = mongoose.model('Teacher', teacherSchema);

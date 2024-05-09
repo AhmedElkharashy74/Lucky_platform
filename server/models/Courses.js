@@ -43,9 +43,16 @@ const courseSchema = new mongoose.Schema({
   thumbNail : {
     type : String, 
   },
+  courseCode : {
+    type : String
+  },
+  courseState : Boolean
+  ,
   videos: [videoSchema] // Array of videos associated with the course
 
   // You can add more fields like course duration, syllabus, etc.
+},{
+  timestamps:true
 });
 
 const Course = mongoose.model('Course', courseSchema);

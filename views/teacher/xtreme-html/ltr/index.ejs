@@ -28,6 +28,7 @@
 </head>
 
 <body>
+ 
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
@@ -188,10 +189,7 @@
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
                                 href="error-404.html" aria-expanded="false"><i class="mdi mdi-alert-outline"></i><span
                                     class="hide-menu">404</span></a></li>
-                        <li class="text-center p-40 upgrade-btn">
-                            <a href="https://www.wrappixel.com/templates/xtremeadmin/"
-                                class="btn d-block w-100 btn-danger text-white" target="_blank">Upgrade to Pro</a>
-                        </li>
+                        
                     </ul>
 
                 </nav>
@@ -223,10 +221,7 @@
                         </div>
                     </div>
                     <div class="col-7">
-                        <div class="text-end upgrade-btn">
-                            <a href="https://www.wrappixel.com/templates/xtremeadmin/" class="btn btn-danger text-white"
-                                target="_blank">Upgrade to Pro</a>
-                        </div>
+                       
                     </div>
                 </div>
             </div>
@@ -310,17 +305,12 @@
                                 <!-- title -->
                                 <div class="d-md-flex">
                                     <div>
-                                        <h4 class="card-title">Top Selling Products</h4>
-                                        <h5 class="card-subtitle">Overview of Top Selling Items</h5>
+                                        <h4 class="card-title">Your Courses</h4>
+                                        <h5 class="card-subtitle">Overview of Your Courses</h5>
                                     </div>
                                     <div class="ms-auto">
                                         <div class="dl">
-                                            <select class="form-select shadow-none">
-                                                <option value="0" selected>Monthly</option>
-                                                <option value="1">Daily</option>
-                                                <option value="2">Weekly</option>
-                                                <option value="3">Yearly</option>
-                                            </select>
+                                            <button class="btn btn-primary" id="add">Add Courses</button>
                                         </div>
                                     </div>
                                 </div>
@@ -330,105 +320,83 @@
                                 <table class="table v-middle">
                                     <thead>
                                         <tr class="bg-light">
-                                            <th class="border-top-0">Products</th>
-                                            <th class="border-top-0">License</th>
-                                            <th class="border-top-0">Support Agent</th>
-                                            <th class="border-top-0">Technology</th>
-                                            <th class="border-top-0">Tickets</th>
-                                            <th class="border-top-0">Sales</th>
-                                            <th class="border-top-0">Earnings</th>
+                                            <th class="border-top-0">Courses</th>
+                                            <th class="border-top-0">Description</th>
+                                            <th class="border-top-0">Category</th>
+                                            <th class="border-top-0">Cost</th>
+                                            <th class="border-top-0">Subscribers</th>
+                                            <th class="border-top-0">Total Earnings</th>
+                                            <th class="border-top-0">Date</th>
+
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
+                                    <t>
+                                        <% courses.forEach(course => { %>
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        
+                                                        <div class="">
+                                                            <h4 class="m-b-0 font-16"><%- course.title %></h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        
+                                                        <div class="">
+                                                            <h4 class="m-b-0 font-16"><%- course.description %></h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <label class="label label-danger"><%- course.category.name %></label>
+                                                </td>
+                                                <td><%- course.price %></td>
+                                                <td><%- course.studentsEnrolled.length %></td>
+                                                <td>
+                                                    <h5 class="m-b-0"><%- course.price*course.studentsEnrolled.length %></h5>  
+                                                </td>
+                                                <td>some date</td>
+
+                                            </tr>
+                                        <% }) %>
+                                        <tr id="formTr" style="display: none;">
+                                            <form method="post" action="/teacher/create-course/">
                                             <td>
                                                 <div class="d-flex align-items-center">
-                                                    <div class="m-r-10"><a
-                                                            class="btn btn-circle d-flex btn-info text-white">EA</a>
-                                                    </div>
+                                                    
                                                     <div class="">
-                                                        <h4 class="m-b-0 font-16">Elite Admin</h4>
+                                                        <input type="text" name="title" id="" class="form-control">
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>Single Use</td>
-                                            <td>John Doe</td>
                                             <td>
-                                                <label class="label label-danger">Angular</label>
+                                                <input type="text" name="description" id="" class="form-control">
                                             </td>
-                                            <td>46</td>
-                                            <td>356</td>
                                             <td>
-                                                <h5 class="m-b-0">$2850.06</h5>
+                                                    <select name="category" class="form-control" id="inputGroupSelect02">
+                                                      <option selected>Choose...</option>
+                                                      <% categories.forEach(category=> { %>
+                                                       <option value="<%- category.id%>"><%- category.name%></option>
+                                                      <% }) %>
+                                                    </select>
+                                                
                                             </td>
+                                            <td>
+                                                <input type="number" name="price" id="" class="form-control" style="width: 75px;">
+                                                <input type="hidden" name="instructor" value="<%- teacher.id %>">
+                                            </td>
+                                            
+                                            <td></td>
+                                            <td>
+                                                <h5 class="m-b-0"></h5>  
+                                            </td>
+                                            <td><input type="submit" class="btn btn-primary"></td>
+                                        </form>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="m-r-10"><a
-                                                            class="btn btn-circle d-flex btn-orange text-white">MA</a>
-                                                    </div>
-                                                    <div class="">
-                                                        <h4 class="m-b-0 font-16">Monster Admin</h4>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>Single Use</td>
-                                            <td>Venessa Fern</td>
-                                            <td>
-                                                <label class="label label-info">Vue Js</label>
-                                            </td>
-                                            <td>46</td>
-                                            <td>356</td>
-                                            <td>
-                                                <h5 class="m-b-0">$2850.06</h5>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="m-r-10"><a
-                                                            class="btn btn-circle d-flex btn-success text-white">MP</a>
-                                                    </div>
-                                                    <div class="">
-                                                        <h4 class="m-b-0 font-16">Material Pro Admin</h4>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>Single Use</td>
-                                            <td>John Doe</td>
-                                            <td>
-                                                <label class="label label-success">Bootstrap</label>
-                                            </td>
-                                            <td>46</td>
-                                            <td>356</td>
-                                            <td>
-                                                <h5 class="m-b-0">$2850.06</h5>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="m-r-10"><a
-                                                            class="btn btn-circle d-flex btn-purple text-white">AA</a>
-                                                    </div>
-                                                    <div class="">
-                                                        <h4 class="m-b-0 font-16">Ample Admin</h4>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>Single Use</td>
-                                            <td>John Doe</td>
-                                            <td>
-                                                <label class="label label-purple">React</label>
-                                            </td>
-                                            <td>46</td>
-                                            <td>356</td>
-                                            <td>
-                                                <h5 class="m-b-0">$2850.06</h5>
-                                            </td>
-                                        </tr>
-                                    </tbody>
+                                        
+                                    </t>
                                 </table>
                             </div>
                         </div>
@@ -444,7 +412,7 @@
                     <!-- column -->
                     <div class="col-lg-6">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-">
                                 <h4 class="card-title">Recent Comments</h4>
                             </div>
                             <div class="comment-widgets scrollable">
@@ -511,7 +479,7 @@
                     <!-- column -->
                     <div class="col-lg-6">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-">
                                 <h4 class="card-title">Temp Guide</h4>
                                 <div class="d-flex align-items-center flex-row m-t-30">
                                     <div class="display-5 text-info"><i class="wi wi-day-showers"></i>
@@ -521,7 +489,7 @@
                                     </div>
                                 </div>
                                 <table class="table no-border mini-table m-t-20">
-                                    <tbody>
+                                    <t>
                                         <tr>
                                             <td class="text-muted">Wind</td>
                                             <td class="font-medium">ESE 17 mph</td>
@@ -538,7 +506,7 @@
                                             <td class="text-muted">Cloud Cover</td>
                                             <td class="font-medium">78%</td>
                                         </tr>
-                                    </tbody>
+                                    </t>
                                 </table>
                                 <ul class="row list-style-none text-center m-t-30">
                                     <li class="col-3">
@@ -609,6 +577,16 @@
     <script src="/assets/libs/chartist/dist/chartist.min.js"></script>
     <script src="/assets/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
     <script src="/dist/js/pages/dashboards/dashboard1.js"></script>
-</body>
+    <script>
+        document.getElementById('add').addEventListener('click', function() {
+    var formTr = document.getElementById('formTr');
+    if (formTr.style.display === 'none') {
+        formTr.style.display = 'table-row'; // or 'block' for display as block element
+    } else {
+        formTr.style.display = 'none';
+    }
+});
+    </script>
+</>
 
 </html>

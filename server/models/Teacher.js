@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 const teacherSchema = new mongoose.Schema({
-  firstName: {
+  first_name: {
     type: String,
     required: true
   },
-  lastName: {
+  last_name: {
     type: String,
     required: true
   },
@@ -19,15 +19,17 @@ const teacherSchema = new mongoose.Schema({
     required: true
   },
   biography : {
-    type : String
+    type : String,
+    required: false
   }
   ,
   profilePic : {
     type : String,
     unique : true,
     required : true,
-    default : ''
-  }
+    default : '/public/uploads/pfp/default.jpeg'
+  },
+  phone: String
   ,
   // You can add more fields like teacher's profile picture, bio, etc.
 },{

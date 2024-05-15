@@ -3,7 +3,7 @@ const teacherController = require('../controllers/teacherController')
 const auth = require('./auth');
 const router = express.Router();
 
-router.post('/teacher/register',auth("teacher"),teacherController.create)
+router.post('/teacher/register',teacherController.create)
 router.post('/login',teacherController.login)
 router.get('/',(req,res)=>{
     res.render('login');
@@ -13,8 +13,5 @@ router.post('/teacher/create-course/', teacherController.createCourse)
 router.get('/logout',teacherController.logOut)
 router.post('/teacher/add-video/:id',auth('teacher'),teacherController.addVideo);
 router.get('/teacher/:id/',teacherController.readCourses)
-router.get('/Home/pages-profile.html',auth('teacher'),(req,res)=>{
-    console.log(req.session.role)
-    res.render('teacher/xtreme-html/ltr/pages-profile')
-})
+router.get('/Home/pages-profile.html',auth('teacher'),teacherController.profile)
 module.exports = router

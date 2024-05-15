@@ -36,18 +36,19 @@ class teacherController{
     
     
     static async create(req,res){
-        const newTeacher = new Teacher({
-            first_name: req.body.fname,
-            last_name : req.body.lname,
-            email : req.body.email,
-            password : req.body.password
-        })
+        
 
         try{
+            const newTeacher = new Teacher({
+                first_name: req.body.fname,
+                last_name : req.body.lname,
+                email : req.body.email,
+                password : req.body.password
+            })
             await newTeacher.save();
             res.status(201).send('record is posted successfully');
         }catch(e){
-            console.error(e.message)
+            console.error(e)
         }
     }
 
@@ -151,6 +152,19 @@ class teacherController{
             res.status(500).send('err');
         }
     }
+
+    static async profile(req, res) {
+        try {
+            console.log(req.session.userId);
+            const courses = await Course.find({ 'instructor': new ObjectId(req.session.userId) });
+            const teacher = await Teacher.findById(req.session.userId);
+            console.log(teacher)
+            res.render('teacher/xtreme-html/ltr/pages-profile', { courses, teacher });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    
 }
 
 

@@ -2,26 +2,34 @@ const mongoose = require('mongoose');
 
 const videoSchema = new mongoose.Schema({
   title: {
-      type: String,
-      required: true
+    type: String,
+    required: true
   },
-  description : {
-    type : String
+  description: {
+    type: String
   },
   url: {
-      type: String,
-      required: true
+    type: String,
+    required: true
   },
-  describtion: String
+  duration: {
+    type: Number, // مدة الفيديو بالثواني
+    required: false
+  },
+  publishDate: {
+    type: Date,
+    default: Date.now
+  }
 });
-
 
 const courseSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true
   },
-  description: String,
+  description: {
+    type: String
+  },
   instructor: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Teacher',
@@ -37,26 +45,40 @@ const courseSchema = new mongoose.Schema({
     ref: 'Student'
   }],
   price: {
-  type: Number,
+    type: Number,
     required: true
   },
-  thumbNail : {
-    type : String, 
+  thumbNail: {
+    type: String
   },
-  courseCode : {
-    type : String
+  courseCode: {
+    type: String
   },
-  courseState : Boolean
-  ,
-  videos: [videoSchema] // Array of videos associated with the course
-
-  // You can add more fields like course duration, syllabus, etc.
-},{
-  timestamps:true
+  courseState: {
+    type: Boolean,
+    default: true // حالة الكورس نشط افتراضيًا
+  },
+  videos: [videoSchema], // مصفوفة من الفيديوهات المرتبطة بالكورس
+  ratings: [{
+    studentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Student',
+      required: true
+    },
+    rating: {
+      type: Number,
+      required: true
+    },
+    comment: {
+      type: String,
+      required: false
+    }
+  }]
+}, {
+  timestamps: true
 });
 
 const Course = mongoose.model('Course', courseSchema);
 const Video = mongoose.model('Video', videoSchema);
 
-
-module.exports = {Course,Video};
+module.exports = { Course, Video };

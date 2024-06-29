@@ -3,11 +3,22 @@ const mongoose = require('mongoose');
 const categorySchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    unique: true, // Ensure category names are unique
+    index: true // Add an index for faster queries
   },
-  // You can add more fields like category description, image, etc.
+  description: {
+    type: String,
+    required: false // Optional description field
+  },
+  image: {
+    type: String,
+    required: false // Optional image field
+  }
+}, {
+  timestamps: true // Add createdAt and updatedAt fields
 });
 
-const category = mongoose.model('Category', categorySchema);
+const Category = mongoose.model('Category', categorySchema);
 
-module.exports = category;
+module.exports = Category;

@@ -2,8 +2,17 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
-const router = require('./server/middlewares/router')
+// const router = require('./server/middlewares/router')
 const session = require('express-session')
+const adminRouter = require('./server/routes/web/adminRoutes')
+const studentRouter = require('./server/routes/web/studentRoutes')
+const teacherRouter = require('./server/routes/web/teacherRoutes')
+const categoryRouter = require('./server/routes/web/categoryRoutes')
+const courseRouter = require('./server/routes/web/courseRoutes')
+const teacherController = require('./server/controllers/teacherController')
+const studentController = require('./server/controllers/studentController')
+const courseController = require('./server/controllers/coursesController')
+
 
 
 
@@ -36,10 +45,30 @@ async function main() {
 }
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-app.use(router)
+app.use('/admin', adminRouter);
+app.use('/teacher', teacherRouter);
+app.use('/student',studentRouter);
+app.use('/category',categoryRouter);
+app.use('/courses', courseRouter)
 // Define your routes here
 
+app.get('/', (req,res)=>{
+  res.render("login");
+})
+app.post('/login', teacherController.login);
 
+
+function getMethodNames(className) {
+  // Get instance methods
+  let instanceMethods = Object.getOwnPropertyNames(className.prototype).filter(method => method !== 'constructor');
+
+  // Get static methods
+  let staticMethods = Object.getOwnPropertyNames(className).filter(method => typeof className[method] === 'function' && method !== 'length' && method !== 'prototype' && method !== 'name');
+
+  return { instanceMethods, staticMethods };
+}
+
+console.log(getMethodNames(courseController));
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

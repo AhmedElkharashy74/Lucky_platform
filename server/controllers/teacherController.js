@@ -333,7 +333,54 @@ static async viewCourse(req, res) {
     }
 }
 
-// Other functions...
+
+
+
+static async viewAddVid(req, res) {
+    try {
+        const teacherId = req.session.userId;
+
+        // Fetch the teacher data
+        const teacher = await Teacher.findById(teacherId);
+        if (!teacher) {
+            return res.status(404).send('Teacher not found');
+        }
+
+        const course_id = req.params.courseId;
+        // Render the add video page with the retrieved data
+        res.render('teacher/xtreme-html/ltr/create-vid', {
+            teacher: teacher,
+            id: course_id
+        });
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        res.status(500).send('Server Error');
+    }
+}
+
+static async viewProfile(req, res) {
+    try {
+        const teacherId = req.session.userId; // Assuming you store teacher's userId in session
+
+        // Fetch the teacher data from the database
+        const teacher = await Teacher.find({_id:ObjectId(teacherId)});
+        
+        if (!teacher) {
+            return res.status(404).send('Teacher not found');
+        }
+
+        // Render the profile view with the retrieved teacher data
+        res.render('teacher/profile', {
+            teacher: teacher
+        });
+
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        res.status(500).send('Server Error');
+    }
+    
+
+}
 }
 
 

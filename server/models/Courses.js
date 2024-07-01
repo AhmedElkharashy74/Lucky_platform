@@ -3,23 +3,20 @@ const mongoose = require('mongoose');
 const videoSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true
+    required: true,
   },
-  description: {
-    type: String
-  },
+  description: String,
   url: {
     type: String,
-    required: true
+    required: true,
   },
-  duration: {
-    type: Number, // مدة الفيديو بالثواني
-    required: false
-  },
+  duration: String,
   publishDate: {
     type: Date,
     default: Date.now
-  }
+  },
+}, {
+  timestamps: true
 });
 
 const courseSchema = new mongoose.Schema({
@@ -27,9 +24,7 @@ const courseSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  description: {
-    type: String
-  },
+  description: String,
   instructor: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Teacher',
@@ -56,9 +51,12 @@ const courseSchema = new mongoose.Schema({
   },
   courseState: {
     type: Boolean,
-    default: true // حالة الكورس نشط افتراضيًا
+    default: true 
   },
-  videos: [videoSchema], // مصفوفة من الفيديوهات المرتبطة بالكورس
+  videos: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Video'
+  }], 
   ratings: [{
     studentId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -71,7 +69,6 @@ const courseSchema = new mongoose.Schema({
     },
     comment: {
       type: String,
-      required: false
     }
   }]
 }, {

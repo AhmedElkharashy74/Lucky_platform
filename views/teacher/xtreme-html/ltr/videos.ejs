@@ -107,6 +107,7 @@
                             <ul class="dropdown-menu dropdown-menu-end user-dd animated" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-user m-r-5 m-l-5"></i>
                                     My Profile</a>
+                                    
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-wallet m-r-5 m-l-5"></i>
                                     My Balance</a>
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-email m-r-5 m-l-5"></i>
@@ -146,7 +147,7 @@
                                         <span class="op-5 user-email">varun@gmail.com</span>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="Userdd">
-                                        <a class="dropdown-item" href="javascript:void(0)"><i
+                                        <a class="dropdown-item" href="profile"><i
                                                 class="ti-user m-r-5 m-l-5"></i> My Profile</a>
                                         <a class="dropdown-item" href="javascript:void(0)"><i
                                                 class="ti-wallet m-r-5 m-l-5"></i> My Balance</a>
@@ -172,7 +173,7 @@
                                 href="index.html" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span
                                     class="hide-menu">Dashboard</span></a></li>
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                href="pages-profile.html" aria-expanded="false"><i
+                                href="" aria-expanded="false"><i
                                     class="mdi mdi-account-network"></i><span class="hide-menu">Profile</span></a></li>
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
                                 href="table-basic.html" aria-expanded="false"><i class="mdi mdi-border-all"></i><span
@@ -234,51 +235,36 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">Default Table</h4>
-                                <h6 class="card-subtitle">Using the most basic table markup, here’s how
-                                    <code>.table</code>-based tables look in Bootstrap. All table styles are inherited
-                                    in Bootstrap 4, meaning any nested tables will be styled in the same manner as the
-                                    parent.</h6>
-                                <h6 class="card-title m-t-40"><i
-                                        class="m-r-5 font-18 mdi mdi-numeric-1-box-multiple-outline"></i> Table With
-                                    Outside Padding</h6>
+                                
+                                <h4 class="card-title m-t-40"><%= course.title%> videos</h4>
                                 <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">First</th>
-                                                <th scope="col">Last</th>
-                                                <th scope="col">Handle</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>Mark</td>
-                                                <td>Otto</td>
-                                                <td>@mdo</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">2</th>
-                                                <td>Jacob</td>
-                                                <td>Thornton</td>
-                                                <td>@fat</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">3</th>
-                                                <td>Larry</td>
-                                                <td>the Bird</td>
-                                                <td>@twitter</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    
                                 </div>
-                                <h6 class="card-title"><i
-                                        class="m-r-5 font-18 mdi mdi-numeric-2-box-multiple-outline"></i> Table Without
-                                    Outside Padding</h6>
+                                
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Video Title</th>
+                                            <th scope="col">Description</th>
+                                            <th scope="col">Uploaded At</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% videos.forEach((video, index) => { %>
+                                            <tr>
+                                                <th scope="row"><%= index + 1 %></th>
+                                                <td><%= video.title %></td>
+                                                <td><%= video.description %></td>
+                                                <td><%= video.createdAt.toDateString() %></td>
+                                            </tr>
+                                        <% }) %>
+                                    </tbody>
+                                </table>
+
+
                             </div>
-                            
+                            <a href="/teacher/Add-Video/<%= course._id %>" class="btn btn-success" style="width: 12%;margin: 20px;">Add a Video</a>
             <footer class="footer text-center">
                 All Rights Reserved by Xtreme Admin. Designed and Developed by <a
                     href="https://www.wrappixel.com">WrapPixel</a>.

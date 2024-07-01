@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const Video = require('../models/Courses').Video;
+const {Course} = require('../models/Courses');
+const { ObjectId } = require('mongodb');
 
 class VideoController {
   // Get all videos
@@ -38,24 +40,44 @@ class VideoController {
 }
 
   // Create one video
-  async createVideo(req, res) {
-    const { title, description, url, duration, publishDate } = req.body;
-    
-    const video = new Video({
-      title,
-      description,
-      url,
-      duration,
-      publishDate
-    });
-
+  static async addVideo(req, res) {
     try {
-      const newVideo = await video.save();
-      res.status(201).json(newVideo);
+      const { title, description } = req.body;
+      const videoFile = req.file;
+
+      if (!videoFile) {
+        return res.status(400).send('No video file uploaded');
+      }
+
+      // Check if the course exists and belongs to the logged-in teacher
+      const course = await Course.findOne({ _id: req.params.courseId, instructor: req.session.userId });
+
+      if (!course) {
+        return res.status(403).send('You don\'t have permission to add a video to this course.');
+      }
+
+      // Create a new video object
+      const newVideo = new Video({
+        title,
+        description,
+        url: `/uploads/vids/${videoFile.filename}`,
+        course: course._id
+      });
+
+      // Save the new video
+      await newVideo.save();
+
+      // Add the new video to the course's videos array
+      course.videos.push(newVideo._id);
+      await course.save();
+
+      res.status(201).redirect(`/courses/${course._id}`);
     } catch (err) {
-      res.status(400).json({ message: err.message });
+      console.error(err)
+      // res.status(201).redirect(`/courses/${course._id}`);
     }
   }
+
 
   // Update one video
   async updateVideo(req, res) {

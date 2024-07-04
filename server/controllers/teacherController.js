@@ -362,27 +362,39 @@ static async viewProfile(req, res) {
     try {
         const teacherId = req.session.userId; // Assuming you store teacher's userId in session
 
-        // Fetch the teacher data from the database
-        const teacher = await Teacher.find({_id:ObjectId(teacherId)});
-        
+        // Validate the teacherId
+        if (!mongoose.Types.ObjectId.isValid(teacherId)) {
+            return res.status(400).send('Invalid Teacher ID');
+        }
+
+        // Fetch the teacher data
+        const teacher = await Teacher.findById(teacherId);
         if (!teacher) {
             return res.status(404).send('Teacher not found');
         }
 
-        // Render the profile view with the retrieved teacher data
-        res.render('teacher/profile', {
-            teacher: teacher
-        });
+        // Count courses created by the teacher
+        const courses = await Course.find({ instructor: teacherId });
+        const courseCount = courses.length;
 
+        // Count videos created by the teacher
+        let videoCount = 0;
+        for (const course of courses) {
+            videoCount += await Video.countDocuments({ course: course._id });
+        }
+
+        // Render the profile page with the retrieved data
+        res.render('teacher/xtreme-html/ltr/pages-profile', {
+            teacher: teacher,
+            courseCount: courseCount,
+            videoCount: videoCount
+        });
     } catch (error) {
         console.error('Error fetching data:', error);
         res.status(500).send('Server Error');
     }
-    
-
 }
 }
-
 
 
 module.exports = teacherController;

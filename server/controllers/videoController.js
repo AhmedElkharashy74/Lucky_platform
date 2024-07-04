@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Video = require('../models/Courses').Video;
 const {Course} = require('../models/Courses');
+const Teacher = require('../models/Teacher');
 const { ObjectId } = require('mongodb');
 
 class VideoController {
@@ -113,6 +114,34 @@ class VideoController {
     }
   }
 
+
+  
+  static async viewVideo(req, res) {
+    try {
+      const videoId = req.params.id;
+      // console.log(videoId)
+      const video = await Video.findById(videoId).populate('course');
+      // console.log('meow'+video)
+      if (!video) {
+        return res.status(404).send('Video not found');
+      }
+
+      const teacherId = req.session.userId;
+      console.log(teacherId);
+      const teacher = await Teacher.findById(teacherId);
+      if (!teacher) {
+        return res.status(404).send('Teacher not found');
+      }
+
+      res.render('teacher/xtreme-html/ltr/video', {
+        video: video,
+        teacher: teacher
+      });
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      res.status(500).send('Server Error');
+    }
+  }
 }
 
 module.exports = VideoController;

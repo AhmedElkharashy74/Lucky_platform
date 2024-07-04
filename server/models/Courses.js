@@ -15,6 +15,11 @@ const videoSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  course: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Course',
+    required: true
+  },
 }, {
   timestamps: true
 });

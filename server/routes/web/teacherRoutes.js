@@ -26,11 +26,11 @@ router.delete('/:id', (req, res) => TeacherController.deleteTeacher(req, res));
 
 router.get('/Add-Video/:courseId',auth('teacher'),TeacherController.viewAddVid);
 
-router.get('/profile/:id', auth('teacher'),(req,res)=>{
-    res.send(req.session.userId)
-});
+router.get('/profile/:id', auth('teacher'), TeacherController.viewProfile);
 
 router.post('/Add-Video/:courseId',auth('teacher'),upload.single('video'),VideoController.addVideo);
+
+router.get('/video/:id', auth('teacher'),VideoController.viewVideo)
 
 
 
